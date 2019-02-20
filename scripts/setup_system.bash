@@ -59,10 +59,10 @@ sudo apt-get -y install \
   protobuf-compiler \
   python-catkin-tools \
   python-tk \
-  ros-$ROS_DISTRO-desktop-full \
-  ros-$ROS_DISTRO-gazebo-ros-pkgs \
-  ros-$ROS_DISTRO-rostest \
-  ros-$ROS_DISTRO-rosunit
+  ros-$ROS1_DISTRO-desktop-full \
+  ros-$ROS1_DISTRO-gazebo-ros-pkgs \
+  ros-$ROS1_DISTRO-rostest \
+  ros-$ROS1_DISTRO-rosunit
 
 # Prepare rosdep to install dependencies.
 echo "Updating rosdep ..."
@@ -73,8 +73,8 @@ fi
 rosdep update
 
 # Install Python2 dependencies
-pip install -U pip
-pip install -I --upgrade future pkgconfig setuptools \
+sudo -H pip2 install -U pip
+sudo -H pip2 install -I --upgrade future pkgconfig setuptools \
   cerberus empy matplotlib numpy pycollada \
   pyulog pyyaml toml
 
@@ -85,20 +85,20 @@ unset ROS_DISTRO
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 421C365BD9FF1F717815A3895523BAEEB01FA116
 
 echo "Updating package lists ..."
-sudo sh -c "deb [arch=amd64,arm64] http://repo.ros2.org/ubuntu/main $(lsb_release -sc) main" >/etc/apt/sources.list.d/ros2-latest.list
-sudo apt-get --qq update
+sudo sh -c 'echo "deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list'
+sudo apt-get -qq update
 sudo apt-get -qq dist-upgrade
 echo "Installing ROS2 $ROS2_DISTRO and some dependencies..."
 
 sudo apt-get install -y \
   python3-colcon-common-extensions \
   python3-dev \
+  python3-pip \
   ros-$ROS2_DISTRO-desktop \
   ros-$ROS2_DISTRO-rmw-opensplice-cpp
 
 # Install Python3 packages needed for testing
-curl https://bootstrap.pypa.io/get-pip.py | python3 &&
-  python3 -m pip install --upgrade pip \
+sudo -H python3 -m pip install --upgrade pip \
     setuptools \
     argcomplete \
     flake8 \
